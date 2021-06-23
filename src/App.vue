@@ -10,6 +10,20 @@
         Agile Simulations Accounts
       </h1>
       <table border>
+        <tr class="header">
+          <td>
+            Enabled
+          </td>
+          <td>
+            Username/Company
+          </td>
+          <td>
+            No of Users
+          </td>
+          <td>
+            Directory
+          </td>
+        </tr>
         <tr>
           <td>
             <input type="checkbox" id="new-enabled" checked="true">
@@ -17,18 +31,32 @@
           <td>
             <input type="text" id="new-username">
           </td>
+          <td>
+            <input type="text" id="new-number-of-users" value="10">
+          </td>
+          <td>
+            <input type="text" id="new-directory">
+          </td>
           <td colspan="3" class="add-new">
             <button @click="addAccount()">
               Add New
             </button>
           </td>
         </tr>
+      </table>
+      <table border>
         <tr class="header">
           <td>
             Enabled
           </td>
           <td>
             Username/Company
+          </td>
+          <td>
+            Users
+          </td>
+          <td>
+            Directory
           </td>
           <td>
             Passcode
@@ -46,6 +74,12 @@
           </td>
           <td>
             {{ account.userName }}
+          </td>
+          <td>
+            {{ account.noOfUsers }}
+          </td>
+          <td>
+            {{ account.directory }}
           </td>
           <td>
             <span>{{ account.passCode }}</span>
@@ -106,7 +140,9 @@ export default {
     addAccount() {
       const enabled = document.getElementById('new-enabled').value
       const userName = document.getElementById('new-username').value
-      bus.$emit('sendCreateAccount', {id: this.id, userName: userName, enabled: enabled})
+      const noOfUsers = document.getElementById('new-number-of-users').value
+      const directory = document.getElementById('new-directory').value
+      bus.$emit('sendCreateAccount', {id: this.id, userName: userName, noOfUsers: noOfUsers, directory: directory, enabled: enabled})
     },
     toggleEnableAccount(account) {
       bus.$emit('sendToggleEnableAccount', {id: this.id, userName: account.userName, enabled: !account.enabled})
@@ -123,7 +159,7 @@ export default {
 
 <style lang="scss">
   table {
-  margin: 0 auto;
+  margin: 12px auto;
 
     tr {
       &.header {
@@ -132,6 +168,13 @@ export default {
 
       td {
         padding: 6px;
+
+        #new-username, #new-directory {
+          width: 160px;
+        }
+        #new-number-of-users {
+          width: 40px;
+        }
 
         &.add-new {
           text-align: left;
