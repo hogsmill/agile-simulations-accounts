@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    thisGame: 'Socket Test',
+    thisGame: 'Agile Simulations Accounts',
     accounts: []
   },
   getters: {

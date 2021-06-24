@@ -62,6 +62,9 @@
             Passcode
           </td>
           <td>
+            Admin Passcode
+          </td>
+          <td>
             Logins
           </td>
           <td>
@@ -83,6 +86,9 @@
           </td>
           <td>
             <span>{{ account.passCode }}</span>
+          </td>
+          <td>
+            <span>{{ account.adminPassCode }}</span>
           </td>
           <td>
             {{ account.logins .length }}
