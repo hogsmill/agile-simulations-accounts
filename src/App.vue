@@ -92,6 +92,7 @@
           </td>
           <td>
             {{ account.logins .length }}
+          </td>
           <td>
             <button @click="deleteAccount(account)">
               Delete
@@ -123,6 +124,8 @@ export default {
     }
   },
   created() {
+    bus.$emit('sendCheckAdminAccounts', {id: this.id})
+
     const id = localStorage.getItem('agile-simulations-accounts')
     if (id == this.id) {
       this.allowed = true
@@ -136,7 +139,6 @@ export default {
     })
 
     bus.$on('accountExists', (data) => {
-      console.log(data)
       if (data.id == this.id) {
         alert('Accont exists for ' + data.userName)
       }

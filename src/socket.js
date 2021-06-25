@@ -12,6 +12,8 @@ const socket = io(connStr)
 
 // Send
 
+bus.$on('sendCheckAdminAccounts', (data) => { socket.emit('sendCheckAdminAccounts', data) })
+
 bus.$on('sendLoadAccounts', (data) => { socket.emit('sendLoadAccounts', data) })
 
 bus.$on('sendCreateAccount', (data) => { socket.emit('sendCreateAccount', data) })
