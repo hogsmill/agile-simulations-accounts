@@ -20,6 +20,8 @@ bus.$on('sendCreateAccount', (data) => { socket.emit('sendCreateAccount', data) 
 
 bus.$on('sendToggleEnableAccount', (data) => { socket.emit('sendToggleEnableAccount', data) })
 
+bus.$on('sendUpdateRoute', (data) => { socket.emit('sendUpdateRoute', data) })
+
 bus.$on('sendNewPassCode', (data) => { socket.emit('sendNewPassCode', data) })
 
 bus.$on('sendDeleteAccount', (data) => { socket.emit('sendDeleteAccount', data) })

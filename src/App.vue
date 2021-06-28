@@ -21,7 +21,7 @@
             No of Users
           </td>
           <td>
-            Directory
+            Route
           </td>
         </tr>
         <tr>
@@ -35,7 +35,7 @@
             <input type="text" id="new-number-of-users" value="10">
           </td>
           <td>
-            <input type="text" id="new-directory">
+            <input type="text" id="new-route">
           </td>
           <td colspan="3" class="add-new">
             <button @click="addAccount()">
@@ -56,7 +56,7 @@
             Users
           </td>
           <td>
-            Directory
+            Route
           </td>
           <td>
             Passcode
@@ -81,8 +81,19 @@
           <td>
             {{ account.noOfUsers }}
           </td>
-          <td>
-            {{ account.directory }}
+          <td v-if="editingRoute.userName != account.userName">
+            <div class="route">
+              {{ account.route }}
+            </div>
+            <button @click="editRoute(account)">
+              Edit
+            </button>
+          </td>
+          <td v-if="editingRoute.userName == account.userName">
+            <input type="text" class="edit-route" :id="'route-' + account.userName" :value="account.route">
+            <button @click="updateRoute(account)">
+              Save
+            </button>
           </td>
           <td>
             <span>{{ account.passCode }}</span>
@@ -115,7 +126,8 @@ export default {
   data() {
     return {
       id: '1234567',
-      allowed: false
+      allowed: false,
+      editingRoute: {}
     }
   },
   computed: {
@@ -149,11 +161,19 @@ export default {
       const enabled = document.getElementById('new-enabled').value
       const userName = document.getElementById('new-username').value
       const noOfUsers = document.getElementById('new-number-of-users').value
-      const directory = document.getElementById('new-directory').value
-      bus.$emit('sendCreateAccount', {id: this.id, userName: userName, noOfUsers: noOfUsers, directory: directory, enabled: enabled})
+      const route = document.getElementById('new-route').value
+      bus.$emit('sendCreateAccount', {id: this.id, userName: userName, noOfUsers: noOfUsers, route: route, enabled: enabled})
     },
     toggleEnableAccount(account) {
       bus.$emit('sendToggleEnableAccount', {id: this.id, userName: account.userName, enabled: !account.enabled})
+    },
+    editRoute(account) {
+      this.editingRoute = account
+    },
+    updateRoute(account) {
+      const route = document.getElementById('route-' + account.userName).value
+      bus.$emit('sendUpdateRoute', {id: this.id, userName: account.userName, route: route})
+      this.editingRoute = {}
     },
     changePassCode(account) {
       bus.$emit('sendNewPassCode', {id: this.id, userName: account.userName})
@@ -177,7 +197,7 @@ export default {
       td {
         padding: 6px;
 
-        #new-username, #new-directory {
+        #new-username, #new-route {
           width: 160px;
         }
         #new-number-of-users {
@@ -190,6 +210,15 @@ export default {
 
         button {
           margin: 0 6px;
+        }
+
+        .route {
+          width: 106px;
+          display: inline-block;
+        }
+
+        .edit-route {
+          width: 100px;
         }
       }
     }
