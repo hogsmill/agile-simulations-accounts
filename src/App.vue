@@ -251,7 +251,7 @@ export default {
       const level = document.getElementById('level-' + account.userName).value
       bus.$emit('sendUpdateLevel', {id: this.id, userName: account.userName, level: level})
     },
-    updateRenewall(account) {
+    updateRenewal(account) {
       const month = document.getElementById('renewal-month-' + account.userName).value
       const year = document.getElementById('renewal-year-' + account.userName).value
       if (month && year) {

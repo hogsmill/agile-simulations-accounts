@@ -24,6 +24,8 @@ bus.$on('sendUpdateRoute', (data) => { socket.emit('sendUpdateRoute', data) })
 
 bus.$on('sendUpdateLevel', (data) => { socket.emit('sendUpdateLevel', data) })
 
+bus.$on('sendUpdateRenewal', (data) => { socket.emit('sendUpdateRenewal', data) })
+
 bus.$on('sendNewPassCode', (data) => { socket.emit('sendNewPassCode', data) })
 
 bus.$on('sendDeleteAccount', (data) => { socket.emit('sendDeleteAccount', data) })
