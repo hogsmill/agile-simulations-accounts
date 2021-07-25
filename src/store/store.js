@@ -12,6 +12,14 @@ export const store = new Vuex.Store({
     thisGame: (state) => {
       return state.thisGame
     },
+    getLevels: (state) => {
+      return [
+        'Using',
+        'Regular Use',
+        'Dedicated',
+        'Admin'
+      ]
+    },
     getAccounts: (state) => {
       return state.accounts
     }

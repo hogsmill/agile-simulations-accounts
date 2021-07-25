@@ -23,6 +23,12 @@
           <td>
             Route
           </td>
+          <td>
+            Level
+          </td>
+          <td>
+            Renewal
+          </td>
         </tr>
         <tr>
           <td>
@@ -36,6 +42,31 @@
           </td>
           <td>
             <input type="text" id="new-route">
+          </td>
+          <td>
+            <select id="new-level">
+              <option v-for="(level, lindex) in levels" :key="lindex">
+                {{ level }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <select id="new-renewal-month">
+              <option value="">
+                (None)
+              </option>
+              <option v-for="(n, mindex) in 12" :key="mindex">
+                {{ n }}
+              </option>
+            </select>
+            <select id="new-renewal-year">
+              <option value="">
+                (None)
+              </option>
+              <option v-for="(n, yindex) in 10" :key="yindex">
+                {{ n + 2020 }}
+              </option>
+            </select>
           </td>
           <td colspan="3" class="add-new">
             <button @click="addAccount()">
@@ -62,7 +93,13 @@
             Passcode
           </td>
           <td>
-            Admin Passcode
+            Admin
+          </td>
+          <td>
+            Level
+          </td>
+          <td>
+            Renewal
           </td>
           <td>
             Logins
@@ -102,7 +139,32 @@
             <span>{{ account.adminPassCode }}</span>
           </td>
           <td>
-            {{ account.logins .length }}
+            <select :id="'level-' + account.userName">
+              <option v-for="(level, lindex) in levels" :key="lindex" @change="updateLevel(account)">
+                {{ level }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <select :id="'renewal-month-' + account.userName" :value="account.renewal && account.renewal.month" @change="updateRenewal(account)">
+              <option value="">
+                (None)
+              </option>
+              <option v-for="(n, mindex) in 12" :key="mindex">
+                {{ n }}
+              </option>
+            </select>
+            <select :id="'renewal-year-' + account.userName" :value="account.renewal && account.renewal.year" @change="updateRenewal(account)">
+              <option value="">
+                (None)
+              </option>
+              <option v-for="(n, yindex) in 10" :key="yindex">
+                {{ n + 2020 }}
+              </option>
+            </select>
+          </td>
+          <td>
+            {{ account.logins.length }}
           </td>
           <td>
             <button @click="deleteAccount(account)">
@@ -133,6 +195,9 @@ export default {
   computed: {
     accounts() {
       return this.$store.getters.getAccounts
+    },
+    levels() {
+      return this.$store.getters.getLevels
     }
   },
   created() {
@@ -162,7 +227,14 @@ export default {
       const userName = document.getElementById('new-username').value
       const noOfUsers = document.getElementById('new-number-of-users').value
       const route = document.getElementById('new-route').value
-      bus.$emit('sendCreateAccount', {id: this.id, userName: userName, noOfUsers: noOfUsers, route: route, enabled: enabled})
+      const level = document.getElementById('new-level').value
+      const month = document.getElementById('new-renewal-month').value
+      const year = document.getElementById('new-renewal-year').value
+      const renewal = {
+        month: month,
+        year: year
+      }
+      bus.$emit('sendCreateAccount', {id: this.id, userName: userName, noOfUsers: noOfUsers, route: route, level: level, renewal: renewal, enabled: enabled})
     },
     toggleEnableAccount(account) {
       bus.$emit('sendToggleEnableAccount', {id: this.id, userName: account.userName, enabled: !account.enabled})
@@ -174,6 +246,21 @@ export default {
       const route = document.getElementById('route-' + account.userName).value
       bus.$emit('sendUpdateRoute', {id: this.id, userName: account.userName, route: route})
       this.editingRoute = {}
+    },
+    updateLevel(account) {
+      const level = document.getElementById('level-' + account.userName).value
+      bus.$emit('sendUpdateLevel', {id: this.id, userName: account.userName, level: level})
+    },
+    updateRenewall(account) {
+      const month = document.getElementById('renewal-month-' + account.userName).value
+      const year = document.getElementById('renewal-year-' + account.userName).value
+      if (month && year) {
+        const renewal = {
+          month: month,
+          year: year
+        }
+        bus.$emit('sendUpdateRenewal', {id: this.id, userName: account.userName, renewal: renewal})
+      }
     },
     changePassCode(account) {
       bus.$emit('sendNewPassCode', {id: this.id, userName: account.userName})
