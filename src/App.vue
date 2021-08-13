@@ -139,7 +139,7 @@
             <span>{{ account.adminPassCode }}</span>
           </td>
           <td>
-            <select :id="'level-' + account.userName">
+            <select :id="'level-' + account.userName" :value="account.level" @change="updateLevel(account)">
               <option v-for="(level, lindex) in levels" :key="lindex" @change="updateLevel(account)">
                 {{ level }}
               </option>
