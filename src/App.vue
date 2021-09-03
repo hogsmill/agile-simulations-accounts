@@ -140,6 +140,12 @@
           </td>
           <td>
             <select :id="'level-' + account.userName" :value="account.level" @change="updateLevel(account)">
+              <option @change="updateLevel('No Estimates')">
+                No Estimates only
+              </option>
+              <option @change="updateLevel('Coin Game')">
+                Coin game only
+              </option>
               <option v-for="(level, lindex) in levels" :key="lindex" @change="updateLevel(account)">
                 {{ level }}
               </option>
