@@ -151,7 +151,6 @@
               </option>
             </select>
             <div v-if="account.level == 'Single Game'">
-              {{ account }}
               <div v-for="(game, gindex) in Object.keys(games)" :key="gindex" class="single-game">
                 <input type="checkbox" :id="singleGameId(account, game)" :checked="account.games && account.games[game]" @click="updateLevel(account)"> {{ game }}
               </div>
@@ -272,7 +271,9 @@ export default {
       if (level == 'Single Game') {
         const games = Object.keys(this.games)
         for (let i = 0; i < games.length; i++) {
-          singleGames[games[i]] = document.getElementById(this.singleGameId(account, games[i])).checked
+          if (document.getElementById(this.singleGameId(account, games[i]))) {
+            singleGames[games[i]] = document.getElementById(this.singleGameId(account, games[i])).checked
+          }
         }
       }
       bus.$emit('sendUpdateLevel', {id: this.id, userName: account.userName, level: level, games: singleGames})
