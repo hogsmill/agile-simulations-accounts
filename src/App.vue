@@ -140,16 +140,21 @@
           </td>
           <td>
             <select :id="'level-' + account.userName" :value="account.level" @change="updateLevel(account)">
-              <option @change="updateLevel('No Estimates')">
-                No Estimates only
+              <option value="">
+                -- Select --
               </option>
-              <option @change="updateLevel('Coin Game')">
-                Coin game only
+              <option @change="updateLevel('Single Game')">
+                Single Game
               </option>
               <option v-for="(level, lindex) in levels" :key="lindex" @change="updateLevel(account)">
                 {{ level }}
               </option>
             </select>
+            <div v-if="account.level == 'Single Game'">
+              <div v-for="(game, gindex) in Object.keys(games)" :key="gindex" class="single-game">
+                <input type="checkbox" :id="singleGameId(account, game)" :checked="account.games && account.games[game]" @click="updateLevel(account)"> {{ game }}
+              </div>
+            </div>
           </td>
           <td>
             <select :id="'renewal-month-' + account.userName" :value="account.renewal && account.renewal.month" @change="updateRenewal(account)">
@@ -195,7 +200,11 @@ export default {
     return {
       id: '1234567',
       allowed: false,
-      editingRoute: {}
+      editingRoute: {},
+      games: {
+        'No Estimates': false,
+        'Coin Game': false
+      }
     }
   },
   computed: {
@@ -253,9 +262,19 @@ export default {
       bus.$emit('sendUpdateRoute', {id: this.id, userName: account.userName, route: route})
       this.editingRoute = {}
     },
+    singleGameId(account, game) {
+      return 'single-game-' + account.userName.replace(/\s/g, '-') + '-' + game.replace(/\s/g, '-')
+    },
     updateLevel(account) {
       const level = document.getElementById('level-' + account.userName).value
-      bus.$emit('sendUpdateLevel', {id: this.id, userName: account.userName, level: level})
+      const singleGames = this.games
+      if (level == 'Single Game') {
+        const games = Object.keys(this.games)
+        for (let i = 0; i < games.length; i++) {
+          singleGames[games[i]] = document.getElementById(this.singleGameId(account, games[i])).checked
+        }
+      }
+      bus.$emit('sendUpdateLevel', {id: this.id, userName: account.userName, level: level, games: singleGames})
     },
     updateRenewal(account) {
       const month = document.getElementById('renewal-month-' + account.userName).value
@@ -312,6 +331,10 @@ export default {
 
         .edit-route {
           width: 100px;
+        }
+
+        .single-game {
+          text-align: left;
         }
       }
     }
