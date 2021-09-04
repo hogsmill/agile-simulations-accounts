@@ -151,8 +151,8 @@
               </option>
             </select>
             <div v-if="account.level == 'Single Game'">
+              {{ account }}
               <div v-for="(game, gindex) in Object.keys(games)" :key="gindex" class="single-game">
-                {{ account.games }}
                 <input type="checkbox" :id="singleGameId(account, game)" :checked="account.games && account.games[game]" @click="updateLevel(account)"> {{ game }}
               </div>
             </div>
