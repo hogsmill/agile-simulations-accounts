@@ -16,3 +16,6 @@ npm run build
 rm /var/www/html/agilesimulations-accounts/css/*
 rm /var/www/html/agilesimulations-accounts/js/*
 cp -R dist/* /var/www/html/agilesimulations-accounts
+
+rm -rf node_modules/.cache
+rm -rf dist
