@@ -108,7 +108,7 @@
             Actions
           </td>
         </tr>
-        <tr v-for="(account, index) in accounts" :key="index">
+        <tr v-for="(account, index) in accounts" :key="index" :class="levelClass(account)">
           <td>
             <input type="checkbox" :checked="account.enabled" @click="toggleEnableAccount(account)">
           </td>
@@ -237,6 +237,9 @@ export default {
     })
   },
   methods: {
+    levelClass(account) {
+      return account.level.replace(' ', '-').toLowerCase()
+    },
     addAccount() {
       const enabled = document.getElementById('new-enabled').value
       const userName = document.getElementById('new-username').value
@@ -306,6 +309,24 @@ export default {
     tr {
       &.header {
         font-weight: bold;
+      }
+
+      &.single-game {
+        background-color: #ddd;
+      }
+      &.using {
+        background-color: yellow;
+      }
+      &.regular-use {
+        background-color: orange;
+      }
+      &.dedicated {
+        background-color: red;
+        color: #fff;
+      }
+      &.admin {
+        background-color: navy;
+        color: #fff;
       }
 
       td {
