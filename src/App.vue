@@ -216,21 +216,21 @@ export default {
     }
   },
   created() {
-    bus.$emit('sendCheckAdminAccounts', {id: this.id})
+    bus.emit('sendCheckAdminAccounts', {id: this.id})
 
     const id = localStorage.getItem('agile-simulations-accounts')
     if (id == this.id) {
       this.allowed = true
-      bus.$emit('sendLoadAccounts', {id: this.id})
+      bus.emit('sendLoadAccounts', {id: this.id})
     }
 
-    bus.$on('loadAccounts', (data) => {
+    bus.on('loadAccounts', (data) => {
       if (data.id == this.id) {
         this.$store.dispatch('updateAccounts', data.accounts)
       }
     })
 
-    bus.$on('accountExists', (data) => {
+    bus.on('accountExists', (data) => {
       if (data.id == this.id) {
         alert('Accont exists for ' + data.userName)
       }
@@ -252,17 +252,17 @@ export default {
         month: month,
         year: year
       }
-      bus.$emit('sendCreateAccount', {id: this.id, userName: userName, noOfUsers: noOfUsers, route: route, level: level, renewal: renewal, enabled: enabled})
+      bus.emit('sendCreateAccount', {id: this.id, userName: userName, noOfUsers: noOfUsers, route: route, level: level, renewal: renewal, enabled: enabled})
     },
     toggleEnableAccount(account) {
-      bus.$emit('sendToggleEnableAccount', {id: this.id, userName: account.userName, enabled: !account.enabled})
+      bus.emit('sendToggleEnableAccount', {id: this.id, userName: account.userName, enabled: !account.enabled})
     },
     editRoute(account) {
       this.editingRoute = account
     },
     updateRoute(account) {
       const route = document.getElementById('route-' + account.userName).value
-      bus.$emit('sendUpdateRoute', {id: this.id, userName: account.userName, route: route})
+      bus.emit('sendUpdateRoute', {id: this.id, userName: account.userName, route: route})
       this.editingRoute = {}
     },
     singleGameId(account, game) {
@@ -279,7 +279,7 @@ export default {
           }
         }
       }
-      bus.$emit('sendUpdateLevel', {id: this.id, userName: account.userName, level: level, games: singleGames})
+      bus.emit('sendUpdateLevel', {id: this.id, userName: account.userName, level: level, games: singleGames})
     },
     updateRenewal(account) {
       const month = document.getElementById('renewal-month-' + account.userName).value
@@ -289,14 +289,14 @@ export default {
           month: month,
           year: year
         }
-        bus.$emit('sendUpdateRenewal', {id: this.id, userName: account.userName, renewal: renewal})
+        bus.emit('sendUpdateRenewal', {id: this.id, userName: account.userName, renewal: renewal})
       }
     },
     changePassCode(account) {
-      bus.$emit('sendNewPassCode', {id: this.id, userName: account.userName})
+      bus.emit('sendNewPassCode', {id: this.id, userName: account.userName})
     },
     deleteAccount(account) {
-      bus.$emit('sendDeleteAccount', {id: this.id, userName: account.userName})
+      bus.emit('sendDeleteAccount', {id: this.id, userName: account.userName})
     }
   }
 }
