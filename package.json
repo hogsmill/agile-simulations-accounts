@@ -1,5 +1,5 @@
 {
-  "name": "socket-test",
+  "name": "agilesimulations-accounts",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -16,7 +16,7 @@
     "is-svg": "^4.3.2",
     "jquery": "^3.6.0",
     "mongodb": "^4.3.1",
-    "sass": "^1.49.8",
+    "sass": "^1.49.9",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "ssri": "^8.0.1",
